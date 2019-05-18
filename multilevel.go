@@ -20,18 +20,6 @@ package main
 // The inline comments below explain the math behind "too large".
 func newMultiLevelStrategy(levels, target int) strategy {
 	return func(s *state) {
-		// Flush a unit of data to the lowest non-empty level.
-		for i := len(s.levels) - 1; i >= 0; i-- {
-			if s.levels[i] == 0 {
-				s.flush(i)
-				return
-			}
-		}
-
-		// All of the levels are non-empty. Compactions always start from the
-		// highest-level and work down including lower levels until the size of
-		// the compaction reaches a level that can contain it.
-
 		// When compacting level 0, allow a flush to be combined with it.
 		s.levels[0]++
 		for i, sum := 1, 0; i < len(s.levels); i++ {
