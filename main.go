@@ -22,6 +22,7 @@ var strategies = []struct {
 	{"lazy+leveled", newLazyLeveledStrategy},
 	{"flush+leveled", newFlushLeveledStrategy},
 	{"multi-level", newMultiLevelStrategy},
+	{"brb", newBRBStrategy},
 }
 
 var rootCmd = &cobra.Command{

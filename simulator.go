@@ -47,7 +47,7 @@ func (s *state) flush(level int) {
 	s.compact(level, level)
 }
 
-func (s *state) compact(start, output int) {
+func (s *state) compact(start, output int) int {
 	var sum int
 	for i := start; i <= output; i++ {
 		sum += s.levels[i]
@@ -55,6 +55,7 @@ func (s *state) compact(start, output int) {
 	}
 	s.levels[output] = sum
 	s.written[output] += sum
+	return sum
 }
 
 func (s *state) dump() {
