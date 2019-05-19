@@ -38,6 +38,7 @@ func newBRBStrategy(levels, target int) strategy {
 		// write to disk. The loop below will include the flush data with any
 		// necessary compaction.
 		s.levels[0] += unit
+		s.flushed += unit
 		for i := 1; i <= len(s.levels); i++ {
 			// Include level i in the compaction when the cost of compactions at
 			// higher levels (inCost) >= cost of previous compaction to level times

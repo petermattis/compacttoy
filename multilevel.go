@@ -22,6 +22,7 @@ func newMultiLevelStrategy(levels, target int) strategy {
 	return func(s *state) {
 		// When compacting level 0, allow a flush to be combined with it.
 		s.levels[0] += unit
+		s.flushed += unit
 		for i, sum := 1, 0; i < len(s.levels); i++ {
 			last := s.levels[i-1]
 			sum += last
@@ -45,7 +46,7 @@ func newMultiLevelStrategy(levels, target int) strategy {
 				// s(1) / 2                       = (s(1) + s(2)) / (s(1) + 1)
 				// (s(1) * (s(1) + 1)) / 2        = s(1) + s(2)
 				// (s(1) * (s(1) + 1)) / 2 - s(1) = s(2)
-				size = (sum*(sum+1))/2 - sum
+				size = (sum*(sum+1))/(2*unit) - sum
 			} else {
 				// w(n) = w(n+1)
 				//

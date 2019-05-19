@@ -10,7 +10,8 @@ import (
 var (
 	levels = 10
 	target = 16384
-	unit   = 1
+	update = 0.0
+	unit   = 100
 )
 
 var strategies = []struct {
@@ -70,20 +71,24 @@ func main() {
 			},
 		}
 		cmd.Flags().IntVarP(
-			&levels, "levels", "l", 10, "number of levels")
+			&levels, "levels", "l", levels, "number of levels")
 		cmd.Flags().IntVarP(
-			&target, "target", "t", 16384, "target size")
-		cmd.Flags().IntVarP(
-			&unit, "unit", "u", 1, "unit size")
+			&target, "target", "t", target, "target size")
+		cmd.Flags().Float64Var(
+			&update, "update", update, "update fraction")
+		cmd.Flags().IntVar(
+			&unit, "unit", unit, "unit size")
 		cmd.Flags().BoolVarP(
 			&verbose, "verbose", "v", false, "verbose logging")
 		rootCmd.AddCommand(cmd)
 	}
 
 	rootCmd.Flags().IntVarP(
-		&target, "target", "t", 16384, "target size")
-	rootCmd.Flags().IntVarP(
-		&unit, "unit", "u", 1, "unit size")
+		&target, "target", "t", target, "target size")
+	rootCmd.Flags().Float64Var(
+		&update, "update", update, "update fraction")
+	rootCmd.Flags().IntVar(
+		&unit, "unit", unit, "unit size")
 
 	if err := rootCmd.Execute(); err != nil {
 		// Cobra has already printed the error message.

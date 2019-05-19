@@ -11,7 +11,7 @@ func makeMaxLevelSize(levels, target int) []int {
 	m := 1.1
 	for {
 		// 1 + x + x^2 + x^3 + ... + x^n = (1 - x^(n+1)) / (1-x)
-		size := int((1 - math.Pow(m, float64(levels+1))) / (1 - m))
+		size := unit * int((1-math.Pow(m, float64(levels+1)))/(1-m))
 		if size >= target {
 			break
 		}
@@ -19,7 +19,7 @@ func makeMaxLevelSize(levels, target int) []int {
 	}
 
 	max := make([]int, levels)
-	for i, base := 0, float64(1); i < len(max); i++ {
+	for i, base := 0, float64(unit); i < len(max); i++ {
 		max[i] = int(base)
 		base *= m
 	}
