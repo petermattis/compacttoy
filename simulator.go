@@ -43,16 +43,19 @@ func (s *state) spaceAmp() float64 {
 }
 
 func (s *state) flush(level int) {
-	s.levels[level]++
+	s.levels[level] += unit
 	s.compact(level, level)
 }
 
 func (s *state) compact(start, output int) int {
-	var sum int
-	for i := start; i <= output; i++ {
-		sum += s.levels[i]
+	const updateFraction = 0.0
+
+	var in int
+	for i := start; i < output; i++ {
+		in += s.levels[i]
 		s.levels[i] = 0
 	}
+	sum := s.levels[output] + int(float64(in)*(1-updateFraction))
 	s.levels[output] = sum
 	s.written[output] += sum
 	return sum

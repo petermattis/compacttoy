@@ -78,7 +78,7 @@ func newFlushLeveledStrategy(levels, target int) strategy {
 			if s.levels[i] >= maxLevelSize[i] {
 				if i == 0 {
 					flushed = true
-					s.levels[i]++
+					s.levels[i] += unit
 				}
 				end := i + 1
 				for ; end < len(s.levels)-1; end++ {

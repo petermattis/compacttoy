@@ -10,6 +10,7 @@ import (
 var (
 	levels = 10
 	target = 16384
+	unit   = 1
 )
 
 var strategies = []struct {
@@ -36,6 +37,8 @@ var rootCmd = &cobra.Command{
 // writes 1 unit of data, and the simulation runs for 16K steps. This is
 // equivalent to writing 1 TB of data in 64 MB units.
 func compareStrategies(cmd *cobra.Command, args []string) {
+	target *= unit
+
 	fmt.Printf("levels")
 	for _, s := range strategies {
 		fmt.Printf("%16s", s.name)
@@ -60,6 +63,7 @@ func main() {
 		cmd := &cobra.Command{
 			Use: s.name,
 			Run: func(cmd *cobra.Command, args []string) {
+				target *= unit
 				state := newState(levels)
 				simulate(target, state, s.factory(levels, target))
 				state.dump()
@@ -69,6 +73,8 @@ func main() {
 			&levels, "levels", "l", 10, "number of levels")
 		cmd.Flags().IntVarP(
 			&target, "target", "t", 16384, "target size")
+		cmd.Flags().IntVarP(
+			&unit, "unit", "u", 1, "unit size")
 		cmd.Flags().BoolVarP(
 			&verbose, "verbose", "v", false, "verbose logging")
 		rootCmd.AddCommand(cmd)
@@ -76,6 +82,8 @@ func main() {
 
 	rootCmd.Flags().IntVarP(
 		&target, "target", "t", 16384, "target size")
+	rootCmd.Flags().IntVarP(
+		&unit, "unit", "u", 1, "unit size")
 
 	if err := rootCmd.Execute(); err != nil {
 		// Cobra has already printed the error message.
