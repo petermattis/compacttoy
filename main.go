@@ -19,12 +19,23 @@ var strategies = []struct {
 	factory func(levels, target int) strategy
 }{
 	{"leveled", newLeveledStrategy},
-	{"tiered", newTieredStrategy},
+	// {"tiered", newTieredStrategy},
 	{"tiered+leveled", newTieredLeveledStrategy},
 	{"lazy+leveled", newLazyLeveledStrategy},
-	{"flush+leveled", newFlushLeveledStrategy},
-	{"multi-level", newMultiLevelStrategy},
-	{"brb", newBRBStrategy},
+	// {"flush+leveled", newFlushLeveledStrategy},
+	// {"multi-level", newMultiLevelStrategy},
+	{"brb-25", func(levels, target int) strategy {
+		return newBRBStrategy(levels, target, 0.25)
+	}},
+	{"brb-33", func(levels, target int) strategy {
+		return newBRBStrategy(levels, target, 0.33)
+	}},
+	{"brb-50", func(levels, target int) strategy {
+		return newBRBStrategy(levels, target, 0.50)
+	}},
+	{"brb-100", func(levels, target int) strategy {
+		return newBRBStrategy(levels, target, 1.0)
+	}},
 }
 
 var rootCmd = &cobra.Command{
