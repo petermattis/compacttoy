@@ -40,7 +40,13 @@ func (s *state) writeAmp() float64 {
 }
 
 func (s *state) spaceAmp() float64 {
-	return 1.0 - float64(s.levels[len(s.levels)-1])/float64(s.totalSize())
+	var maxSize int
+	for i := range s.levels {
+		if maxSize < s.levels[i] {
+			maxSize = s.levels[i]
+		}
+	}
+	return 1.0 - float64(maxSize)/float64(s.totalSize())
 }
 
 func (s *state) flush(level int) {
@@ -84,6 +90,7 @@ func (s *state) dump() {
 	}
 	fmt.Printf("total %9d %9d\n", total, s.totalWritten())
 	fmt.Printf("w-amp %9.1f\n", s.writeAmp())
+	fmt.Printf("s-amp %8.1f%%\n", 100.0*s.spaceAmp())
 	fmt.Printf("\n")
 }
 
